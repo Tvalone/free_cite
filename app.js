@@ -8,6 +8,11 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var citations = require('./routes/citations');
+var login = require('./routes/login'); 
+var about = require('./routes/about');
+var mongoose = require('mongoose');
+var dbUrl = process.envMONGOHQ_URL || 'mongodb://@localhost:27017/freecite';
+var db = mongoose.connect(dbUrl, {safe: true});
 var app = express();
 
 // view engine setup
@@ -23,9 +28,11 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/login', login);
 app.use('/users', users);
-app.use('/citations', citations);
+app.use('/citations', citations); 
+app.use('/about', about);
+app.use('/', routes);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
